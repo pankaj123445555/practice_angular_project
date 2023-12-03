@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+interface Item {
+  id: number;
+  name: string;
+}
+
 @Component({
   selector: 'app-test',
   template : `
@@ -10,9 +15,12 @@ import { Router } from '@angular/router';
   `,
   styleUrls: ['./test.component.css']
 })
+
+
+
 export class TestComponent implements OnInit {
 
-  public arr = [
+  public arr: Item[] =  [
     {
       id : 1,
       name : "pankaj"
@@ -30,7 +38,7 @@ export class TestComponent implements OnInit {
       name : "abc"
     }
   ]
-  onSelect = (data : any) =>{
+  onSelect = (data : Item) =>{
     this.router.navigate([`/test/${data.id}`])
    console.log('data is',data);
   }
