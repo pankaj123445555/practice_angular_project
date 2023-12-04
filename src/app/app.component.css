@@ -1,0 +1,14 @@
+.outer-div{
+    border: 1px solid red;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.heading{
+    cursor :pointer;
+    margin : 25px   
+}
+.input-bar{
+    width: 100px;
+    height: 30px;
+}

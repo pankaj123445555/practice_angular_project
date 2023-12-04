@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+// import { ConsoleReporter } from 'jasmine';
+
 
 
 // we need to create an angular form component 
@@ -6,24 +10,17 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   template : `
-   <div>
-
-   <div>
-   <label> Enter user-name  </label>
-   <input [(ngModel)] = "username" type = "text"/>
-   </div>
-   <div>
-   <label> Password  </label>
-   <input [(ngModel)] = "password" type = "password"/>
-   </div>
-   <div>
-   <button (click) = "onSubmit()">submit </button>
-   </div>
-   <!-- We need to print everything -->
-   <h1 *ngFor = "let data of arr">
-   <span> {{data.username}} </span>
-   <span> {{data.password}} </span>
-   </h1>
+    <div >
+    <label>Enter the id </label>
+    <input [ngModel]="inputValue" (ngModelChange)= "solve($event)" class = "input-bar" type = "number"/>
+     <div class = "outer-div">
+     <ng-container *ngIf = "arr.length>0 ; else notFound"> 
+    <span class="heading" *ngFor="let data of arr">{{ data.id }}</span>
+    </ng-container>
+    <ng-template #notFound>
+    <p>No data found</p>
+  </ng-template>
+     <div>
    </div>
   `,
   styleUrls: ['./app.component.css']
@@ -31,17 +28,24 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
   title = 'my-dream-project';
-  public username : String;
-  public password : String;
-
-  public arr: {username : String, password : String}[] = [];
-  // now we have to create an method for on submit
-    onSubmit = () => {
-      this.arr.push({username : this.username , password : this.password});
-      console.log("username", this.username);
-      console.log("password",this.password);
+  public inputValue:number;
+  
+   public arr = [];
+    constructor(private http : HttpClient){
     }
-    ngDoCheck () {
-      console.log('finall component is re rendered');
+
+       solve = (index : number) =>{
+      
+        const new_arr =  this.arr.filter((element:any)=>{
+            return element.id === index
+        })
+       this.arr = new_arr;
+    }
+    ngOnInit(){
+      this.http.get('https://jsonplaceholder.typicode.com/posts')
+      .subscribe((data : any [] )=>{
+          console.log('data',data);
+          this.arr = data
+      })
     }
 }
